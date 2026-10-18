@@ -20,6 +20,12 @@ private PlayerController playerController;
 // Speed at which the camera rotates around the player.
  public float rotationSpeed = 90f; 
 
+// Checks game over
+ private bool GameOver = false;
+
+// Stores platform position
+ public Transform platform;
+
  // Start is called before the first frame update.
  void Start()
     {
@@ -32,6 +38,13 @@ private PlayerController playerController;
  // LateUpdate is called once per frame after all Update functions have been completed.
  void LateUpdate()    
     {
+      // if game over = trigger game over view (look up at platform)
+      if (GameOver)
+      {
+         transform.LookAt(platform);
+         return;
+      }
+
       // if player object is destroyed, exit the function to avoid null reference errors
       if (player == null)
       {
@@ -49,6 +62,17 @@ private PlayerController playerController;
  // update the offset after rotating so the new camera angle is preserved
         offset = transform.position - player.transform.position;
     }
+
+ public void GameOverView(Vector3 deathPosition, bool IcicleDeath)
+ {
+   GameOver = true;
+
+   if(!IcicleDeath)
+   {
+   transform.position = deathPosition;
+   }
+   
+ }
 }
 
 //NOTE: accidentally worked on my cameracontroller script for snowbound on my rollaball project, copy pasted both to swap

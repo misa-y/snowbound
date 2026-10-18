@@ -81,6 +81,12 @@ public Transform cameraTransform;
        {
         if (other.gameObject.name == "DeathZone" || other.gameObject.name == "Icicle(Clone)")
               {
+
+              bool IcicleDeath = other.gameObject.name == "Icicle(Clone)"; // Check if the player died from an icicle
+              
+              // trigger gameoverview
+              Camera.main.GetComponent<CameraController>().GameOverView(transform.position, IcicleDeath);
+              
               // Destroy the player object 
               Destroy(gameObject);
               // Display gameover text and playagain button
