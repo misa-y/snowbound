@@ -9,6 +9,9 @@ public class IcicleSystemController : MonoBehaviour
     // number of warnings to activate
     private int numberOfWarnings = 3;
 
+    // time of icicle activation
+    private float activeTime = 10f;
+
     // randomly selects warning spots to activate
     void ActivateWarnings()
     {
@@ -30,14 +33,20 @@ public class IcicleSystemController : MonoBehaviour
         {
             if (warningSpots[i].activeSelf) //only spawn icicle above the warning spots that were activated
             {
-                Instantiate(iciclePrefab, warningSpots[i].transform.position, warningSpots[i].transform.rotation, transform); //spawns icicle 5 units above the warning spot and makes it a child of the warning spot 
+                GameObject newIcicle = Instantiate(iciclePrefab, warningSpots[i].transform.position, warningSpots[i].transform.rotation, transform); //spawns icicle 5 units above the warning spot and makes it a child of the warning spot 
                 warningSpots[i].SetActive(false); //deactivates the warning spot after spawning the icicle
+
+                // destroy after 10 seconds
+                Destroy(newIcicle, activeTime);
             }
         }
+
+        //randomly activate again (after icicles despawn) between 5-30 seconds
+        Invoke("ActivateWarnings", activeTime + Random.Range(5f,30f)); 
     }
 
     void Start()
     {
-        ActivateWarnings();
+        Invoke("ActivateWarnings", Random.Range(5f, 10f)); //delay first activation of icicle obstacle by 5-10 seconds
     }
 }

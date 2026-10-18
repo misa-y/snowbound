@@ -21,11 +21,13 @@ public class PlayerController : MonoBehaviour
  private float score = 0;
  public TextMeshProUGUI ScoreCount;
 
-
  // Game Over text and Play Again button
  public GameObject gameOverText;
  public GameObject playAgainButton;
 
+
+// checks if player is on the IcePatch (to adjust the force applied, to make it harder to control the player on ice)
+ public bool onIce = false;
 
 // so cameracontroller can access the player's movement input for camera rotation
 public float GetMovementX()
@@ -69,7 +71,14 @@ public Transform cameraTransform;
       // Create a 3D movement vector based on the player's input and the camera's forward direction.
        Vector3 movement = forward * movementY;
 
-      // Apply force to the Rigidbody to move the player.
+      if (onIce)
+      {
+       // reduce the force applied to the player when on ice to make it harder to control
+       rb.AddForce(movement * speed * 0.3f); 
+      }
+      
+      else
+      // Apply force to the Rigidbody to move the player, normal
        rb.AddForce(movement * speed); 
 
       // Update the score based on time survived

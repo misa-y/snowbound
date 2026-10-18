@@ -523,6 +523,7 @@ MonoBehaviour:
   ScoreCount: {fileID: 805064595}
   gameOverText: {fileID: 1144422959}
   playAgainButton: {fileID: 1135401073}
+  onIce: 0
   cameraTransform: {fileID: 1303618073}
 --- !u!114 &523617771
 MonoBehaviour:
