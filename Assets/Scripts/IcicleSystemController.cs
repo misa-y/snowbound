@@ -23,7 +23,7 @@ public class IcicleSystemController : MonoBehaviour
             warningSpots[randomIndex].SetActive(true);
         }
 
-        Invoke("SpawnIcicle", 1.5f); // delay the spawn of the icicles by 1.5 seconds     
+        Invoke("SpawnIcicle", 2f); // delay the spawn of the icicles by 2 seconds     
     }
 
     // spawns icicles above the warning spots that were activated
@@ -47,6 +47,6 @@ public class IcicleSystemController : MonoBehaviour
 
     void Start()
     {
-        Invoke("ActivateWarnings", Random.Range(5f, 10f)); //delay first activation of icicle obstacle by 5-10 seconds
+        Invoke("ActivateWarnings", Random.Range(1f, 5f)); //delay first activation of icicle obstacle by 5-10 seconds
     }
 }
