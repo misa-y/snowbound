@@ -8,4 +8,9 @@ public class StartMenu : MonoBehaviour
     {
         SceneManager.LoadScene("Game");
     }
+
+    public void ShowInstructions()
+    {
+        SceneManager.LoadScene("Instructions");
+    }
 }
