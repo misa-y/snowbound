@@ -25,9 +25,15 @@ public class PlayerController : MonoBehaviour
  public GameObject gameOverText;
  public GameObject playAgainButton;
 
-
 // checks if player is on the IcePatch (to adjust the force applied, to make it harder to control the player on ice)
  public bool onIce = false;
+ 
+ // for gameover views for differentobstacles
+ private bool IcicleDeath = false;
+
+// sound effects
+ public AudioSource icicleSound;
+ public AudioSource gameoverSound;
 
 // so cameracontroller can access the player's movement input for camera rotation
 public float GetMovementX()
@@ -88,22 +94,36 @@ public Transform cameraTransform;
 
  private void OnTriggerEnter(Collider other)
        {
-        if (other.gameObject.name == "DeathZone" || other.gameObject.name == "Icicle(Clone)")
+            //reset death trigger
+            IcicleDeath = false;
+            
+        if (other.gameObject.name == "Icicle(Clone)")
               {
-
-              bool IcicleDeath = other.gameObject.name == "Icicle(Clone)"; // Check if the player died from an icicle
-              
-              // trigger gameoverview
-              Camera.main.GetComponent<CameraController>().GameOverView(transform.position, IcicleDeath);
-              
-              // Destroy the player object 
-              Destroy(gameObject);
-              // Display gameover text and playagain button
-              gameOverText.SetActive(true);
-              playAgainButton.SetActive(true);
-
+              IcicleDeath = true; // Check if the player died from an icicle
+              AudioSource.PlayClipAtPoint(icicleSound.clip, transform.position); // Play the icicle sound  (lets the sound play before destroying object)
+              gameOver();
+              }
+       else if (other.gameObject.name == "DeathZone")
+              {
+              gameOver();
               }
        }
+
+  private void gameOver(){
+      // AudioSource.PlayClipAtPoint(gameoverSound.clip, transform.position); //play gameover sound for any death
+
+      // trigger gameoverview
+      Camera.main.GetComponent<CameraController>().GameOverView(transform.position, IcicleDeath);
+              
+      // Destroy the player object 
+      //change color of player object to flash red before destroying it
+      GetComponent<Renderer>().material.color = Color.red;
+      
+      Destroy(gameObject);
+      // Display gameover text and playagain button
+      gameOverText.SetActive(true);
+      playAgainButton.SetActive(true);
+  }
 
  // Function to update score
  void SetScore() 

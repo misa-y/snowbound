@@ -4,6 +4,8 @@ public class IcePatchSystem : MonoBehaviour
 {
     private float normalDamping;
     private float activeTime = 20f; // time of ice patch activation
+    
+    public AudioSource icePatchSound;
 
     void Start()
     {
@@ -44,6 +46,8 @@ public class IcePatchSystem : MonoBehaviour
                 rb.linearVelocity *= 2f; // increase the player's speed when on ice patch
 
                 other.GetComponent<PlayerController>().onIce=true; //on the ice patch
+
+                icePatchSound.Play(); // Play the ice patch sound when the player enters the ice patch
             }
         }
     }
