@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using TMPro;
 
@@ -29,11 +30,19 @@ public class PlayerController : MonoBehaviour
  public bool onIce = false;
  
  // for gameover views for differentobstacles
- private bool IcicleDeath = false;
+ private bool ObstacleDeath = false;
 
 // sound effects
  public AudioSource icicleSound;
  public AudioSource gameoverSound;
+
+// health bar
+ public int health = 3;
+ public Slider healthBar;
+
+// materials
+ public Material damagedMaterial;
+ public Material playerMaterial;
 
 // so cameracontroller can access the player's movement input for camera rotation
 public float GetMovementX()
@@ -48,6 +57,10 @@ public Transform cameraTransform;
  // Start is called before the first frame update.
  void Start()
        {
+       // Set the initial health value on the health bar
+       healthBar.maxValue = health;
+       healthBar.value = health;
+
        // Get and store the Rigidbody component attached to the player.
        rb = GetComponent<Rigidbody>();
        gameOverText.SetActive(false);
@@ -95,13 +108,12 @@ public Transform cameraTransform;
  private void OnTriggerEnter(Collider other)
        {
             //reset death trigger
-            IcicleDeath = false;
+            ObstacleDeath = false;
             
         if (other.gameObject.name == "Icicle(Clone)")
               {
-              IcicleDeath = true; // Check if the player died from an icicle
               AudioSource.PlayClipAtPoint(icicleSound.clip, transform.position); // Play the icicle sound  (lets the sound play before destroying object)
-              gameOver();
+              damagePlayer();
               }
        else if (other.gameObject.name == "DeathZone")
               {
@@ -109,17 +121,36 @@ public Transform cameraTransform;
               }
        }
 
+void damagePlayer()
+       {
+       health --;
+       healthBar.value = health; // everytime the player is damaged, they lose one health
+
+       GetComponent<Renderer>().material = damagedMaterial;
+       Invoke("resetPlayerMaterial", 0.75f); // Reset the material after 0.75 seconds
+
+       if (health<=0)
+            {
+            ObstacleDeath = true;
+            gameOver(); 
+            }
+
+       }
+      
+ void resetPlayerMaterial()
+       {
+        GetComponent<Renderer>().material = playerMaterial;
+       }
+
   private void gameOver(){
       // AudioSource.PlayClipAtPoint(gameoverSound.clip, transform.position); //play gameover sound for any death
 
       // trigger gameoverview
-      Camera.main.GetComponent<CameraController>().GameOverView(transform.position, IcicleDeath);
+      Camera.main.GetComponent<CameraController>().GameOverView(transform.position, ObstacleDeath);
               
       // Destroy the player object 
-      //change color of player object to flash red before destroying it
-      GetComponent<Renderer>().material.color = Color.red;
-      
       Destroy(gameObject);
+      
       // Display gameover text and playagain button
       gameOverText.SetActive(true);
       playAgainButton.SetActive(true);
