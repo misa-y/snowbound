@@ -13,7 +13,7 @@ public class IcePatchSystem : MonoBehaviour
         GetComponent<Collider>().enabled = false;
         GetComponent<MeshRenderer>().enabled = false;
 
-        Invoke("ActivateIcePatch", Random.Range(15f, 25f)); //delay first activation of icepatch obstacle by 15-25 seconds
+        Invoke("ActivateIcePatch", Random.Range(5f, 20f)); //delay first activation of icepatch obstacle by 5-20 seconds
         
     }
 

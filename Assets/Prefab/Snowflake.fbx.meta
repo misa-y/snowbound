@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: dc23d0fc17b7bc94a987406b7320ca42
+guid: 6f6065c42255df54aa6c774a833d34c5
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
@@ -7,7 +7,7 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: Candy-Cane
+    4300000: Snowflake
     9500000: //RootNode
   materials:
     importMaterials: 1
@@ -78,5 +78,5 @@ AssetOrigin:
   productId: 13102
   packageName: FREE Christmas Assets / Low Poly
   packageVersion: v1.2
-  assetPath: Assets/Christmas-Assets-FREE/FBX/Candy-Cane.fbx
+  assetPath: Assets/Additional Files/Snowflake.fbx
   uploadId: 101619

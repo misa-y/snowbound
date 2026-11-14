@@ -3,6 +3,7 @@ using UnityEngine;
 public class PlatformController : MonoBehaviour
 {
     private Vector3 rotationDirection = new Vector3(1, 0, 0);
+    private float rotationSpeed = 2.5f;
 
     // changes direction every 15 seconds
     void Start()
@@ -13,7 +14,7 @@ public class PlatformController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Rotate(rotationDirection * 4f * Time.deltaTime, Space.World); //makes sure its the fixed x and z axis
+        transform.Rotate(rotationDirection * rotationSpeed * Time.deltaTime, Space.World); //makes sure its the fixed x and z axis
 
     }
 

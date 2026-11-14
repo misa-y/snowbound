@@ -47,6 +47,6 @@ public class IcicleSystemController : MonoBehaviour
 
     void Start()
     {
-        Invoke("ActivateWarnings", Random.Range(1f, 5f)); //delay first activation of icicle obstacle by 5-10 seconds
+        Invoke("ActivateWarnings", Random.Range(1f, 5f)); //delay first activation of icicle obstacle by 1-5 seconds
     }
 }

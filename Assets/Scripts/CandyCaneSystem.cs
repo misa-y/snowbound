@@ -17,7 +17,7 @@ public class CandyCaneSystem : MonoBehaviour
         curvedCaneColliders.SetActive(false);
         caneRenderer.enabled = false;
 
-        Invoke("ActivateCandyCane", Random.Range(1f, 2f)); //delay first activation of candycane obstacle by 15-25 seconds 
+        Invoke("ActivateCandyCane", Random.Range(5f, 20f)); //delay first activation of candycane obstacle by 5-20 seconds 
     }
 
     void Update()
@@ -32,7 +32,6 @@ public class CandyCaneSystem : MonoBehaviour
     // Spin the candycane
     private void ActivateCandyCane()
     {
-        Debug.Log("CANDY CANE ACTIVATED");
         // turns on candycane obstacle
         active = true;
         caneCollider.enabled = true;
@@ -50,7 +49,7 @@ public class CandyCaneSystem : MonoBehaviour
         curvedCaneColliders.SetActive(false);
         caneRenderer.enabled = false;
         
-        //randomly activate again (after candycane despawn) between 10-20 seconds
-        Invoke("ActivateCandyCane", Random.Range(10f,20f));
+        //randomly activate again (after candycane despawn) between 10-25 seconds
+        Invoke("ActivateCandyCane", Random.Range(10f,25f));
     }
 }

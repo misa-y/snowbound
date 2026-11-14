@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour
  public AudioSource gameoverSound;
 
 // health bar
- private int health = 6;
+ private float health = 6f;
  public Slider healthBar;
  private bool canTakeDamage = true; //damage cooldown to prevent multiple damage events too quickly
 
@@ -113,21 +113,30 @@ public Transform cameraTransform;
             
         if (other.gameObject.name == "Icicle(Clone)")
               {
-              AudioSource.PlayClipAtPoint(damagedSound.clip, transform.position); // Play the damaged sound  
-              damagePlayer();
+                  AudioSource.PlayClipAtPoint(damagedSound.clip, transform.position); // Play the damaged sound  
+                  damagePlayer(1f, 1f); // damage player by 1 and set cooldown to 1 second
               }
        else if (other.CompareTag("CandyCane"))
               {
                   AudioSource.PlayClipAtPoint(damagedSound.clip, transform.position); // Play the damaged sound 
-                  damagePlayer();
+                  damagePlayer(1f, 1);
               }
        else if (other.gameObject.name == "DeathZone")
               {
-              gameOver();
+                  gameOver();
               }
        }
 
- void damagePlayer()
+ private void OnTriggerStay(Collider other)
+      {
+      if (other.CompareTag("BlueFire"))
+            {
+                  AudioSource.PlayClipAtPoint(damagedSound.clip, transform.position); // Play the damaged sound 
+                  damagePlayer(0.25f, 0.5f);
+            }
+}
+
+ void damagePlayer(float damageAmount, float cooldown)
        {
        // If the player is in cooldown, ignore damage
        if (!canTakeDamage) 
@@ -137,13 +146,13 @@ public Transform cameraTransform;
 
        canTakeDamage = false; // Set the cooldown flag
 
-       health --;
+       health -= damageAmount; // reduce health by the damage amount
        healthBar.value = health; // everytime the player is damaged, they lose one health
 
        GetComponent<Renderer>().material = damagedMaterial;
        Invoke("resetPlayerMaterial", 0.75f); // Reset the material after 0.75 seconds
 
-       Invoke("ResetDamageCooldown", 1f); // Damage cooldown of 1 second to prevent multiple damage events too quickly
+       Invoke("ResetDamageCooldown", cooldown); // Damage cooldown of 1 second to prevent multiple damage events too quickly
 
        if (health<=0)
             {
