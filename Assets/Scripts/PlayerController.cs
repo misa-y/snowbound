@@ -33,12 +33,13 @@ public class PlayerController : MonoBehaviour
  private bool ObstacleDeath = false;
 
 // sound effects
- public AudioSource icicleSound;
+ public AudioSource damagedSound;
  public AudioSource gameoverSound;
 
 // health bar
- public int health = 3;
+ private int health = 6;
  public Slider healthBar;
+ private bool canTakeDamage = true; //damage cooldown to prevent multiple damage events too quickly
 
 // materials
  public Material damagedMaterial;
@@ -112,8 +113,13 @@ public Transform cameraTransform;
             
         if (other.gameObject.name == "Icicle(Clone)")
               {
-              AudioSource.PlayClipAtPoint(icicleSound.clip, transform.position); // Play the icicle sound  (lets the sound play before destroying object)
+              AudioSource.PlayClipAtPoint(damagedSound.clip, transform.position); // Play the damaged sound  
               damagePlayer();
+              }
+       else if (other.CompareTag("CandyCane"))
+              {
+                  AudioSource.PlayClipAtPoint(damagedSound.clip, transform.position); // Play the damaged sound 
+                  damagePlayer();
               }
        else if (other.gameObject.name == "DeathZone")
               {
@@ -121,13 +127,23 @@ public Transform cameraTransform;
               }
        }
 
-void damagePlayer()
+ void damagePlayer()
        {
+       // If the player is in cooldown, ignore damage
+       if (!canTakeDamage) 
+       {
+            return; 
+       }
+
+       canTakeDamage = false; // Set the cooldown flag
+
        health --;
        healthBar.value = health; // everytime the player is damaged, they lose one health
 
        GetComponent<Renderer>().material = damagedMaterial;
        Invoke("resetPlayerMaterial", 0.75f); // Reset the material after 0.75 seconds
+
+       Invoke("ResetDamageCooldown", 1f); // Damage cooldown of 1 second to prevent multiple damage events too quickly
 
        if (health<=0)
             {
@@ -136,6 +152,11 @@ void damagePlayer()
             }
 
        }
+
+ void ResetDamageCooldown()
+       {
+       canTakeDamage = true; // Reset the cooldown flag
+       }
       
  void resetPlayerMaterial()
        {
@@ -143,9 +164,9 @@ void damagePlayer()
        }
 
   private void gameOver(){
-      // AudioSource.PlayClipAtPoint(gameoverSound.clip, transform.position); //play gameover sound for any death
+      AudioSource.PlayClipAtPoint(gameoverSound.clip, transform.position); //play gameover sound for any death
 
-      // trigger gameoverview
+      // trigger gameoverview if it died from obstacles
       Camera.main.GetComponent<CameraController>().GameOverView(transform.position, ObstacleDeath);
               
       // Destroy the player object 
