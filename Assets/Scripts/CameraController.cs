@@ -63,11 +63,11 @@ private PlayerController playerController;
         offset = transform.position - player.transform.position;
     }
 
- public void GameOverView(Vector3 deathPosition, bool IcicleDeath)
+ public void GameOverView(Vector3 deathPosition, bool ObstacleDeath)
  {
    GameOver = true;
 
-   if(!IcicleDeath)
+   if(!ObstacleDeath)
    {
    transform.position = deathPosition;
    }
