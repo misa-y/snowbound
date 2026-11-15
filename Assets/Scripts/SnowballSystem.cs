@@ -2,23 +2,45 @@ using UnityEngine;
 
 public class SnowballSystem : MonoBehaviour
 {
-    private float speed = 5f;
-    private float rollSpeed = 200f; 
-
-    public Transform snowballVisual;
+    public GameObject[] snowballs;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        foreach (GameObject snowball in snowballs)
+        {
+            snowball.SetActive(false);
+        }
+
+        Invoke("ActivateRandomSnowball", Random.Range(5f, 20f));
     }
 
-    // Update is called once per frame
-    void Update()
+    void ActivateRandomSnowball()
     {
-        //move straight across the platform
-        transform.Translate(Vector3.left * speed * Time.deltaTime);
+        int amountActive = Random.Range(1,5); //1-4 active snowballs at a time
+        int activated = 0;
+        
+        while (activated < amountActive)
+        {
+            int randomSnowball = Random.Range(0, snowballs.Length);
 
-        snowballVisual.Rotate(Vector3.forward * rollSpeed * Time.deltaTime); // snowball is rolling as it moves
+            if (!snowballs[randomSnowball].activeSelf)
+            {
+                snowballs[randomSnowball].SetActive(true);
+                activated++;
+            }
+        }
+
+        Invoke("DeactivateSnowball", 5f);
+    }
+
+    void DeactivateSnowball()
+    {
+        foreach (GameObject snowball in snowballs)
+        {
+            snowball.SetActive(false);
+        }
+
+        Invoke("ActivateRandomSnowball", Random.Range(10f, 25f));
     }
 }
